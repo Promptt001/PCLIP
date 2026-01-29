@@ -1,5 +1,9 @@
 # PCLIP — Meteor Addon for “teleport-style” clipping (ViaFabricPlus → 1.6.4 servers)
 
+
+## WARNING: Fall damage will be severe if you do not teleleport to an air block directly over a solid block! No fall wont help help if your target is a few blocks off the ground!
+
+
 PCLIP is a small **Meteor Client addon** (Fabric) that adds one command:
 
 > `.pclip <x> <y> <z>`
