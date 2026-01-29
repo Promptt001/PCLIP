@@ -1,44 +1,27 @@
 # PCLIP (Meteor Addon)
 
-A small Meteor Client addon that adds a precision clip command:
+A small Meteor Client addon that adds a precision clip command designed to avoid server hitches caused by large diagonal moves. This was designed for use on older servers vulnerable to cliping exploits.
 
-- **`.pclip <x> <z>`**  
-  Rotates your player to face the target X/Z coordinate and then **clips you exactly to that X/Z**, keeping your current Y (height).  
-  This avoids long-distance “crosshair drift” and removes the need to manually calculate distances.
+## Command
 
-> This addon is intentionally minimal: one command, no GUI, no extra modules.
+### `.pclip <x> <y> <z>`
 
----
+Does a 3-stage movement:
 
-## Features
+1) **VClip to Y**  
+   Moves only vertically to the target Y (X/Z unchanged).
 
-- ✅ **Exact X/Z clip** (no forward-distance approximation)
-- ✅ **Auto-rotate yaw** to face the destination before clipping
-- ✅ Keeps **current Y** (hclip-style horizontal clip)
-- ✅ Moves your **vehicle too** if you’re mounted (boat, minecart, etc.)
-- ✅ Lightweight: no mixins, no extra dependencies beyond Meteor/Fabric
+2) **Rotate to face the destination**  
+   Sets yaw/pitch to look directly at the target point `(x, y, z)`.
 
----
+3) **Axis-only horizontal movement (split across ticks)**  
+   Instead of one big diagonal move, it moves in two thin “lines”:
+   - Tick 1: move **X-only** to `(x, y, currentZ)`
+   - Tick 2: move **Z-only** to `(x, y, z)`
 
-## Requirements
+This avoids the server receiving a single massive diagonal delta, which can cause chunk/collision lookups across a large XZ area and hitch the tick loop.
 
-- **Fabric Loader** (matching your Minecraft version)
-- **Meteor Client** (same MC version)
-- **Java**: use the Java version recommended for your Minecraft version (commonly Java 21 for modern versions)
-
----
-
-## Installation (Users)
-
-1. Build the addon jar (or download a release jar if you publish one).
-2. Put the jar in your instance’s `mods` folder **alongside Meteor Client**.
-3. Launch Minecraft with Fabric + Meteor.
-
----
-
-## Usage
-
-In chat (Meteor command prefix is a dot):
+## Example
 
 ```text
-.pclip 1000 -2500
+.pclip 10000 64 -2500
