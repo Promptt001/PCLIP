@@ -1,5 +1,7 @@
 # PCLIP (Meteor Addon)
 
+This mod was designed for use on a 1.6.4 server.
+
 A small Meteor Client addon that adds a precision clip command designed to avoid server hitches caused by large diagonal moves. This was designed for use on older servers vulnerable to cliping exploits.
 
 ## Command
